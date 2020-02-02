@@ -1,7 +1,7 @@
-package com.example.demo.service;
+package com.example.demo.service.user;
 
-import com.example.demo.dto.UserDTO;
-import com.example.demo.dto.UserMapper;
+import com.example.demo.dto.user.UserDTO;
+import com.example.demo.dto.user.UserMapper;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import lombok.AllArgsConstructor;
