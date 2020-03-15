@@ -5,10 +5,13 @@ import com.example.demo.dto.partDetails.PartDetailsMapper;
 import com.example.demo.model.PartDetails;
 import com.example.demo.repository.PartDetailsRepository;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
+@NoArgsConstructor
 public class PartDetailsService {
 
     private PartDetailsRepository partDetailsRepository;
@@ -41,5 +44,9 @@ public class PartDetailsService {
                         .findById(id)
                         .orElseThrow(Exception::new)
         );
+    }
+
+    public Page<PartDetailsDTO> findAllPartDetails(Pageable pageable) {
+        return partDetailsMapper.partDetailsToPartDetailsDTOs(partDetailsRepository.findAll(pageable));
     }
 }
