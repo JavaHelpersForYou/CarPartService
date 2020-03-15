@@ -9,6 +9,5 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    @Query(value = "select u from User u where u.id = :id and u.status = :status")
     Optional<User> findByIdAndStatus(Long id, StatusType statusType);
 }
