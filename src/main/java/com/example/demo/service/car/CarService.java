@@ -4,11 +4,13 @@ import com.example.demo.dto.car.CarDTO;
 import com.example.demo.dto.car.CarMapper;
 import com.example.demo.model.Car;
 import com.example.demo.repository.CarRepository;
-import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
+@NoArgsConstructor
 public class CarService {
 
     private CarRepository carRepository;
@@ -40,5 +42,9 @@ public class CarService {
         Car car = carRepository.findById(id)
                 .orElseThrow(Exception::new);
         carRepository.delete(car);
+    }
+
+    public Page<CarDTO> findAllCars(Pageable pageable) {
+        return carMapper.carToCarDTOs(carRepository.findAll(pageable));
     }
 }

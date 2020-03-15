@@ -4,7 +4,10 @@ import com.example.demo.dto.user.UserDTO;
 import com.example.demo.dto.user.UserMapper;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
-import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -14,7 +17,7 @@ import static com.example.demo.model.StatusType.ACTIVE;
 import static com.example.demo.model.StatusType.DELETED;
 
 @Service
-@AllArgsConstructor
+@NoArgsConstructor
 public class UserService {
 
     private UserRepository userRepository;
@@ -48,5 +51,9 @@ public class UserService {
                 .orElseThrow(Exception::new);
         user.setStatus(DELETED);
         userRepository.saveAndFlush(user);
+    }
+
+    public Page<UserDTO> findAllUsers(Pageable pageable) {
+        return userMapper.userToUserDTOs(userRepository.findAll(pageable));
     }
 }
