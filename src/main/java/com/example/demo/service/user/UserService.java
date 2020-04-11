@@ -2,12 +2,12 @@ package com.example.demo.service.user;
 
 import com.example.demo.dto.user.UserDTO;
 import com.example.demo.dto.user.UserMapper;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
-import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -17,11 +17,11 @@ import static com.example.demo.model.StatusType.ACTIVE;
 import static com.example.demo.model.StatusType.DELETED;
 
 @Service
-@NoArgsConstructor
+@AllArgsConstructor
 public class UserService {
 
-    private UserRepository userRepository;
-    private UserMapper userMapper;
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     public UserDTO createUser(UserDTO userDTO) {
         User user = User.builder()
@@ -39,21 +39,35 @@ public class UserService {
         return userMapper.userToUserDto(saveUser);
     }
 
-    public UserDTO findUserById(Long id) throws Exception {
+    public UserDTO findById(Long id) {
         return userRepository
                 .findByIdAndStatus(id, ACTIVE)
                 .map(userMapper::userToUserDto)
-                .orElseThrow(Exception::new);
+                .orElseThrow(ResourceNotFoundException::new);
     }
 
-    public void deleteUser(Long id) throws Exception {
+    public void deleteUser(Long id) {
         User user = userRepository.findByIdAndStatus(id, ACTIVE)
-                .orElseThrow(Exception::new);
+                .orElseThrow(ResourceNotFoundException::new);
         user.setStatus(DELETED);
         userRepository.saveAndFlush(user);
     }
 
     public Page<UserDTO> findAllUsers(Pageable pageable) {
         return userMapper.userToUserDTOs(userRepository.findAll(pageable));
+    }
+
+    public UserDTO updateUser(long id, UserDTO userDTO) {
+        User userUpdateById = userRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+
+        User actualUser = userMapper.userDtoToUser(userDTO);
+
+        userUpdateById.setName(actualUser.getName());
+        userUpdateById.setUsername(actualUser.getUsername());
+        userUpdateById.setEmail(actualUser.getEmail());
+        userUpdateById.setPassword(actualUser.getPassword());
+        userUpdateById.setRoles(actualUser.getRoles());
+
+        return userMapper.userToUserDto(userRepository.saveAndFlush(userUpdateById));
     }
 }
