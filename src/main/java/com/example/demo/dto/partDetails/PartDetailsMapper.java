@@ -5,8 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 @Service
-public interface PartDetailsMapper {
-    default PartDetailsDTO partDetailsToPartDetailsDto(PartDetails partDetails) {
+public class PartDetailsMapper {
+    public PartDetailsDTO partDetailsToPartDetailsDto(PartDetails partDetails) {
         return PartDetailsDTO.builder()
                 .id(partDetails.getId())
                 .name(partDetails.getName())
@@ -19,7 +19,7 @@ public interface PartDetailsMapper {
                 .build();
     }
 
-    default PartDetails partDetailsDtoToPartDetails(PartDetailsDTO partDetailsDTO) {
+    public PartDetails partDetailsDtoToPartDetails(PartDetailsDTO partDetailsDTO) {
         return PartDetails.builder()
                 .id(partDetailsDTO.getId())
                 .name(partDetailsDTO.getName())
@@ -32,7 +32,7 @@ public interface PartDetailsMapper {
                 .build();
     }
 
-    default Page<PartDetailsDTO> partDetailsToPartDetailsDTOs(Page<PartDetails> partDetails) {
+    public Page<PartDetailsDTO> partDetailsToPartDetailsDTOs(Page<PartDetails> partDetails) {
         return partDetails.map(this::partDetailsToPartDetailsDto);
     }
 }

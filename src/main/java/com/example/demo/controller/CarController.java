@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,26 +18,31 @@ public class CarController {
     private final CarService carService;
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public Page<CarDTO> findAllCars(@PageableDefault(sort = {"id"}, direction = Sort.Direction.ASC, size = 15) Pageable page) {
         return carService.findAllCars(page);
     }
 
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public CarDTO findById(@PathVariable long id) {
         return carService.findById(id);
     }
 
     @PostMapping
-    public CarDTO createCar(CarDTO carDTO) {
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public CarDTO createCar(@RequestBody CarDTO carDTO) {
         return carService.createCar(carDTO);
     }
 
     @PutMapping("/{id}")
-    public CarDTO updateCar(@PathVariable long id, CarDTO carDTO) {
+    @ResponseStatus(code = HttpStatus.ACCEPTED)
+    public CarDTO updateCar(@PathVariable long id, @RequestBody CarDTO carDTO) {
         return carService.updateCar(id, carDTO);
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void deleteCar(@PathVariable long id) {
         carService.deleteCar(id);
     }

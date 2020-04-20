@@ -5,8 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 @Service
-public interface CarMapper {
-    default CarDTO carToCarDto(Car car) {
+public class CarMapper {
+    public CarDTO carToCarDto(Car car) {
         return CarDTO.builder()
                 .id(car.getId())
                 .name(car.getName())
@@ -19,7 +19,7 @@ public interface CarMapper {
                 .build();
     }
 
-    default Car carDtoToCar(CarDTO carDTO) {
+    public Car carDtoToCar(CarDTO carDTO) {
         return Car.builder()
                 .id(carDTO.getId())
                 .name(carDTO.getName())
@@ -32,7 +32,7 @@ public interface CarMapper {
                 .build();
     }
 
-    default Page<CarDTO> carToCarDTOs(Page<Car> cars) {
+    public Page<CarDTO> carToCarDTOs(Page<Car> cars) {
         return cars.map(this::carToCarDto);
     }
 }

@@ -32,7 +32,6 @@ public class CarService {
                 .age(carDTO.getAge())
                 .price(carDTO.getPrice())
                 .countryOfManufacture(carDTO.getCountryOfManufacture())
-                .detailsList(carDTO.getDetailsList())
                 .build();
 
         Car saveCar = carRepository.saveAndFlush(car);
@@ -61,7 +60,6 @@ public class CarService {
         carUpdateById.setAge(actualCar.getAge());
         carUpdateById.setPrice(actualCar.getPrice());
         carUpdateById.setCountryOfManufacture(actualCar.getCountryOfManufacture());
-        carUpdateById.setDetailsList(actualCar.getDetailsList());
 
         return carMapper.carToCarDto(carRepository.save(carUpdateById));
     }

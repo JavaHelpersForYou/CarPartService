@@ -5,8 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 @Service
-public interface UserMapper {
-    default UserDTO userToUserDto(User user) {
+public class UserMapper {
+    public UserDTO userToUserDto(User user) {
         return UserDTO.builder()
                 .id(user.getId())
                 .name(user.getName())
@@ -17,7 +17,7 @@ public interface UserMapper {
                 .build();
     }
 
-    default User userDtoToUser(UserDTO userDTO) {
+    public User userDtoToUser(UserDTO userDTO) {
         return User.builder()
                 .id(userDTO.getId())
                 .name(userDTO.getName())
@@ -28,7 +28,7 @@ public interface UserMapper {
                 .build();
     }
 
-    default Page<UserDTO> userToUserDTOs(Page<User> users) {
+    public Page<UserDTO> userToUserDTOs(Page<User> users) {
         return users.map(this::userToUserDto);
     }
 }
